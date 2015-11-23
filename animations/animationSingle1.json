@@ -1,0 +1,13 @@
+{
+
+  "sequence": [ {"triple": ["white", "red", "green" ], "time": 500},
+              {"triple": ["red", "green", "blue" ], "time": 500},
+              {"triple": ["green", "blue", "white" ], "time": 500},
+              {"triple": ["blue", "white", "red" ], "time": 500},
+              {"triple": ["white", "red", "green" ], "time": 500},
+              {"triple": ["red", "green", "blue" ], "time": 500},
+              {"triple": ["green", "blue", "white" ], "time": 500},
+              {"triple": ["blue", "white", "red" ], "time": 500},
+              {"triple": ["black", "black", "black" ], "time": 500}
+            ]  
+}
