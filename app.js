@@ -2,8 +2,8 @@ var five        = require("johnny-five");
 var pixel       = require("node-pixel");
 var io 			= require('socket.io-client');
 
-var host = "https://socket-1136.appspot.com";
-//var host = "http://localhost:8080";
+//var host = "https://socket-1136.appspot.com";
+var host = "http://localhost:8080";
 var socket 		= io.connect(host, {reconnect: true});
 
 // ############################
@@ -18,6 +18,12 @@ socket.on('led_multi', function(msg) {
 socket.on('led_single', function(msg) {
   	console.log('led single  :: ' + msg.id + " :: " + msg.color);
 	showColorByID(msg.id, msg.color);
+});
+
+socket.on('animation', function(msg) {
+  	console.log('animation');
+    startLightshow();
+    setTimeout(stopLightshow, 2000);
 });
 
 console.log('### client is running ###');
