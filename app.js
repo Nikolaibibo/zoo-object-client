@@ -1,13 +1,28 @@
-var five        = require("johnny-five");
-var pixel       = require("node-pixel");
-var io 			    = require('socket.io-client');
-var config 			= require('./config.json');
+var five          = require("johnny-five");
+var pixel         = require("node-pixel");
+var io 			      = require('socket.io-client');
+var Animator      = require('./Animator.js');
 
-var host        = config.socket_host;
-//var host      = "http://192.168.2.108:8080";
-var socket 		  = io.connect(host, {reconnect: true});
+// external config data
+var animationFile = require('./animations/animationSingle1.json');
+var config 			  = require('./config.json');
+
+var host          = config.socket_host;
+var socket 		    = io.connect(host, {reconnect: true});
 
 // ############################
+// Animator
+// ############################
+
+var myAnimator = new Animator();
+myAnimator.on("color_single", function (resultobject) {
+  console.log("Animator color_single");
+});
+
+// ############################
+// ############################
+// ############################
+
 socket.on('connect', function(msg) {
   console.log('Connected!');
 });
@@ -27,8 +42,10 @@ socket.on('animation', function(msg) {
     setTimeout(stopLightshow, 2000);
 });
 
-console.log('### client is running ###');
-
+socket.on('notification', function(msg) {
+  	console.log('notification');
+    myAnimator.doSingleAni(animationFile);
+});
 
 // ############################
 // johnny-five options
@@ -116,3 +133,5 @@ function startLightshow () {
 
   }, 1000/fps);
 }
+
+console.log('### client is running ###');

@@ -1,11 +1,10 @@
 var EventEmitter        = require("events").EventEmitter;
 var util                = require("util");
 
-var _this;
+var _this, inter, itemLength, index;
 
-var inter;
-var itemLength;
-var index;
+// ############################
+// ############################
 
 function Animator () {
     EventEmitter.call(this);
@@ -13,25 +12,28 @@ function Animator () {
 }
 util.inherits(Animator, EventEmitter);
 
-
-
-
-
+// ############################
+// ############################
 
 function colorSingle (col0, col1, col2) {
   if (index >= itemLength-1) {
     clearInterval(inter);
   }
-  console.log("colorSingle ");
+  //console.log("colorSingle ");
   index++;
-  
-  strip.pixel(0).color(col0);
-  strip.pixel(1).color(col1);
-  strip.pixel(2).color(col2);
-  strip.show();
+
+  var data = {
+    pixel0: col0,
+    pixel1: col1,
+    pixel2: col2
+  };
+
+  _this.emit("color_single", data);
 }
 
-
+// ############################
+// ##### public functions #####
+// ############################
 
 Animator.prototype.doSingleAni = function (obj) {
   console.log("doSingleAni item count: " + obj.sequence.length);
@@ -39,10 +41,12 @@ Animator.prototype.doSingleAni = function (obj) {
   itemLength = obj.sequence.length;
   index = 0;
 
-  inter = setInterval( 
-    function () { 
+  inter = setInterval(
+    function () {
       colorSingle(obj.sequence[index].triple[0], obj.sequence[index].triple[1], obj.sequence[index].triple[2]);
     }, obj.sequence[index].time )
 }
 
+
+// ############################
 module.exports = Animator;
