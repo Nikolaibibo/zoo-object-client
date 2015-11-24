@@ -3,7 +3,7 @@ var pixel       = require("node-pixel");
 var io 			= require('socket.io-client');
 
 //var host = "https://socket-1136.appspot.com";
-var host = "http://localhost:8080";
+var host = "http://localhost";
 var socket 		= io.connect(host, {reconnect: true});
 
 // ############################
