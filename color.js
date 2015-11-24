@@ -67,7 +67,7 @@ var animSingle = {
               {triple: ["green", "blue", "white" ], time: 500},
               {triple: ["blue", "white", "red" ], time: 500},
               {triple: ["black", "black", "black" ], time: 500}
-            ]  
+            ]
 }
 
 // ############################
@@ -87,8 +87,8 @@ function doStripAni (obj) {
   itemLength = obj.animation.length;
   index = 0;
 
-  inter = setInterval( 
-    function () { 
+  inter = setInterval(
+    function () {
       colorStrip(obj.animation[index].color);
     }, obj.animation[index].time )
 };
