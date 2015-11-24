@@ -2,7 +2,7 @@ var five        = require("johnny-five");
 var pixel       = require("node-pixel");
 var io 			= require('socket.io-client');
 
-var host = "https://20151121t195053-dot-socket-1136.appspot.com";
+var host = "https://socket-1136.appspot.com";
 //var host = "http://localhost:8080";
 var socket 		= io.connect(host, {reconnect: true});
 
