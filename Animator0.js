@@ -1,7 +1,7 @@
 var EventEmitter        = require("events").EventEmitter;
 var util                = require("util");
 
-var _this, inter, itemLength, index, colorObject;
+var _this, inter, itemLength, index;
 
 // ############################
 // ############################
@@ -15,18 +15,12 @@ util.inherits(Animator, EventEmitter);
 // ############################
 // ############################
 
-function startSingleAnimation (obj) {
-
-
-
-}
-
-function processColors () {
-  console.log("processColors");
-
-  var col0 = colorObject.sequence[index].triple[0];
-  var col1 = colorObject.sequence[index].triple[1];
-  var col2 = colorObject.sequence[index].triple[2];
+function colorSingle (col0, col1, col2) {
+  if (index >= itemLength-1) {
+    clearInterval(inter);
+  }
+  //console.log("colorSingle ");
+  index++;
 
   var data = {
     pixel0: col0,
@@ -35,16 +29,6 @@ function processColors () {
   };
 
   _this.emit("color_single", data);
-
-  index++;
-
-  if (index <= itemLength-1) {
-    setTimeout(processColors, colorObject.sequence[index].time );
-  }else{
-    console.log("ENDE");
-  }
-
-
 }
 
 // ############################
@@ -54,11 +38,16 @@ function processColors () {
 Animator.prototype.doSingleAni = function (obj) {
   console.log("doSingleAni item count: " + obj.sequence.length);
 
-  colorObject = obj;
-  itemLength = colorObject.sequence.length;
+  itemLength = obj.sequence.length;
   index = 0;
 
-  setTimeout(processColors, colorObject.sequence[index].time );
+
+
+  inter = setInterval(
+    function () {
+      colorSingle(obj.sequence[index].triple[0], obj.sequence[index].triple[1], obj.sequence[index].triple[2]);
+      //console.log(index + "   time : " + obj.sequence[index].time);
+    }, obj.sequence[index].time )
 }
 
 

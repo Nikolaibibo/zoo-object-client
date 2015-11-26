@@ -4,19 +4,23 @@ var io 			      = require('socket.io-client');
 var Animator      = require('./Animator.js');
 
 // external config data
-var animationFile = require('./animations/animationSingle1.json');
-var config 			  = require('./config.json');
+var animation1File       = require('./animations/animationSingle_1.json');
+var animationNikolaiFile = require('./animations/animationSingle_nikolai.json');
+var startupAnimationFile = require('./animations/animationSingle_startup.json');
+var config 			         = require('./config.json');
 
-var host          = config.socket_host;
-var socket 		    = io.connect(host, {reconnect: true});
+var host                 = config.socket_host;
+var socket 		           = io.connect(host, {reconnect: true});
 
 // ############################
 // Animator
 // ############################
 
 var myAnimator = new Animator();
-myAnimator.on("color_single", function (resultobject) {
-  console.log("Animator color_single");
+myAnimator.on("color_single", function (data) {
+  //console.log("Animator color_single");
+  console.log("Animator color_single::: " + data.pixel0 + "  ::  " + data.pixel1 + "  ::  " + data.pixel2);
+  showColorSingle(data.pixel0, data.pixel1, data.pixel2);
 });
 
 // ############################
@@ -27,12 +31,12 @@ socket.on('connect', function(msg) {
   console.log('Connected!');
 });
 socket.on('led_multi', function(msg) {
-  	console.log('led multi  :: ' + " :: " + msg.color);
-	 showColorAll(msg.color);
+  console.log('led multi  :: ' + " :: " + msg.color);
+	showColorAll(msg.color);
 });
 
 socket.on('led_single', function(msg) {
-  	console.log('led single  :: ' + msg.id + " :: " + msg.color);
+  console.log('led single  :: ' + msg.id + " :: " + msg.color);
 	showColorByID(msg.id, msg.color);
 });
 
@@ -44,7 +48,12 @@ socket.on('animation', function(msg) {
 
 socket.on('notification', function(msg) {
   	console.log('notification');
-    myAnimator.doSingleAni(animationFile);
+    myAnimator.doSingleAni(animation1File);
+});
+
+socket.on('nikolai', function(msg) {
+  	console.log('notification');
+    myAnimator.doSingleAni(animationNikolaiFile);
 });
 
 // ############################
@@ -75,6 +84,7 @@ board.on("ready", function() {
 
     strip.on("ready", function() {
         console.log("Strip ready, let's go");
+        myAnimator.doSingleAni(startupAnimationFile);
         //setupSockets();
         //doLightshow();
     });
@@ -90,6 +100,15 @@ function showColorAll (arg) {
   //strip.pixel(0).color(arg);
   //strip.pixel(1).color(arg);
   strip.color(arg);
+  strip.show();
+}
+
+function showColorSingle (col0, col1, col2) {
+  if (blinker) clearInterval(blinker);
+  strip.pixel(0).color(col0);
+  strip.pixel(1).color(col1);
+  strip.pixel(2).color(col2);
+  //strip.color(arg);
   strip.show();
 }
 
