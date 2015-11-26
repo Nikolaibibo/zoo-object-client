@@ -3,7 +3,7 @@ var pixel         = require("node-pixel");
 var io 			      = require('socket.io-client');
 var request       = require('request');
 var fs            = require('fs');
-
+var shell         = require('shelljs');
 var Animator      = require('./Animator.js');
 
 // external config data
