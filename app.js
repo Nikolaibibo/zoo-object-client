@@ -172,7 +172,7 @@ function capturePic () {
   shell.exec(shell_string_stillimage, function(code, output) {
     console.log("pic captured on pi");
     sendPic();
-  }
+  });
 }
 
 function sendPic () {
