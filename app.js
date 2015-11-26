@@ -1,9 +1,15 @@
 var five          = require("johnny-five");
 var pixel         = require("node-pixel");
 var io 			      = require('socket.io-client');
+var request       = require('request');
+var fs            = require('fs');
+
 var Animator      = require('./Animator.js');
 
 // external config data
+var target_file_still = "/home/pi/nodejs/zoo-object-client/images/cam.jpg";
+var shell_string_stillimage = "raspistill -o " + target_file_still + " -w 400 -h 267 -t 500";
+
 var animation1File       = require('./animations/animationSingle_1.json');
 var animationNikolaiFile = require('./animations/animationSingle_nikolai.json');
 var startupAnimationFile = require('./animations/animationSingle_startup.json');
@@ -54,6 +60,14 @@ socket.on('notification', function(msg) {
 socket.on('nikolai', function(msg) {
   	console.log('notification');
     myAnimator.doSingleAni(animationNikolaiFile);
+    capturePic();
+});
+
+// image_saved
+
+socket.on('image_saved', function(msg) {
+  	console.log('pi client -> image_saved on server:: ' + msg.path);
+    //myAnimator.doSingleAni(animationNikolaiFile);
 });
 
 // ############################
@@ -151,6 +165,30 @@ function startLightshow () {
       strip.show();
 
   }, 1000/fps);
+}
+
+function capturePic () {
+  console.log("capturePic");
+  shell.exec(shell_string_stillimage, function(code, output) {
+    console.log("pic captured on pi");
+    sendPic();
+  }
+}
+
+function sendPic () {
+
+  console.log("sendPic");
+  var url = config.socket_host + "/upload";
+
+  var req = request.post(url, function (err, resp, body) {
+    if (err) {
+      console.log('Error!');
+    } else {
+      console.log('URL: ' + body);
+    }
+  });
+  var form = req.form();
+  form.append('file', fs.createReadStream(target_file_still));
 }
 
 console.log('### client is running ###');
