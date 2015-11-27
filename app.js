@@ -7,15 +7,19 @@ var shell         = require('shelljs');
 var Animator      = require('./Animator.js');
 
 // external config data
-var target_file_still = "/home/pi/nodejs/zoo-object-client/images/cam.jpg";
-var shell_string_stillimage = "raspistill -o " + target_file_still + " -w 400 -h 267 -t 500";
+var target_file_still   = "/home/pi/nodejs/zoo-object-client/images/cam.jpg";
+var shell_stillimage    = "raspistill -o " + target_file_still + " -w 400 -h 267 -t 500";
 
+// animation files
 var animation1File       = require('./animations/animationSingle_1.json');
 var animationNikolaiFile = require('./animations/animationSingle_nikolai.json');
 var startupAnimationFile = require('./animations/animationSingle_startup.json');
-var config 			         = require('./config.json');
 
+// host config
+var config 			         = require('./config.json');
 var host                 = config.socket_host;
+
+// connect to socket server
 var socket 		           = io.connect(host, {reconnect: true});
 
 // ############################
@@ -39,6 +43,7 @@ socket.on('connect', function(msg) {
 socket.on('led_multi', function(msg) {
   console.log('led multi  :: ' + " :: " + msg.color);
 	showColorAll(msg.color);
+  capturePic();
 });
 
 socket.on('led_single', function(msg) {
@@ -169,7 +174,7 @@ function startLightshow () {
 
 function capturePic () {
   console.log("capturePic");
-  shell.exec(shell_string_stillimage, function(code, output) {
+  shell.exec(shell_stillimage, function(code, output) {
     console.log("pic captured on pi");
     sendPic();
   });
