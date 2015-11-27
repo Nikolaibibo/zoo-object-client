@@ -43,7 +43,7 @@ socket.on('connect', function(msg) {
 socket.on('led_multi', function(msg) {
   console.log('led multi  :: ' + " :: " + msg.color);
 	showColorAll(msg.color);
-  capturePic();
+
 });
 
 socket.on('led_single', function(msg) {
@@ -65,7 +65,7 @@ socket.on('notification', function(msg) {
 socket.on('nikolai', function(msg) {
   	console.log('notification');
     myAnimator.doSingleAni(animationNikolaiFile);
-    capturePic();
+    //capturePic();
 });
 
 // image_saved
@@ -120,6 +120,8 @@ function showColorAll (arg) {
   //strip.pixel(1).color(arg);
   strip.color(arg);
   strip.show();
+
+  capturePic();
 }
 
 function showColorSingle (col0, col1, col2) {
@@ -134,9 +136,9 @@ function showColorSingle (col0, col1, col2) {
 function showColorByID (id, col) {
   if (blinker) clearInterval(blinker);
   strip.pixel(id).color(col);
-  //strip.pixel(1).color(arg);
-  //strip.color(col);
   strip.show();
+
+  capturePic();
 }
 
 
