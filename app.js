@@ -8,7 +8,7 @@ var Animator      = require('./Animator.js');
 
 // external config data
 var target_file_still   = "/home/pi/nodejs/zoo-object-client/images/cam.jpg";
-var shell_stillimage    = "raspistill -o " + target_file_still + " -w 400 -h 267 -t 500";
+var shell_stillimage    = "raspistill -o " + target_file_still + " -w 800 -h 534 -t 500";
 
 // animation files
 var animation1File       = require('./animations/animationSingle_1.json');
