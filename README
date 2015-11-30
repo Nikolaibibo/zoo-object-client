@@ -1,3 +1,16 @@
-A socket app for testing purposes
+## Connected object client
 
+# hardware
+raspberry pi 2, an arduino connected to the pi via USB (serial) and a raspberry-camera.
+The arduino connects to three neopixels via GPIO-6 and changes the colors of the LEDs by software
+
+# software
+node.js, express.js, node-pixel, shell.js and the request module.
+
+# what it does
+the client software establishes a connection to a socket-server that acts as an API for the object.
+If the right events come up, the client switches on the LEDs and changes the colors. After each color change,
+a photo is created locally on the pi and uploaded to the server afterwards via request module.
+
+# app engine commands
 gcloud preview app deploy app.yaml --promote
